@@ -48,8 +48,6 @@ class RedisAspect implements AroundInterface{
 
         $arguments = $proceedingJoinPoint->arguments['keys'];
         $startTime = microtime(true);
-        //$span = $this->startSpan('Redis' . '::' . $arguments['name']);
-        //$span->setTag($this->spanTagManager->get('redis', 'arguments'), json_encode($arguments['arguments']));
         $result = $proceedingJoinPoint->process();
 
         $data["result"] = $result;

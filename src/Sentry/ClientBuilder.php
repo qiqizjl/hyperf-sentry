@@ -42,16 +42,15 @@ class ClientBuilder
             'prefixes'             => [$path],
             "integrations"         => [
                 new RequestIntegration()
-            ]
-
-            //'in_app_exclude' => ["{$path}/vendor"],
+            ],
+            'in_app_exclude' => ["{$path}/vendor"],
         ], $sentryConfig);
 
 
         $clientBuilder = \Sentry\ClientBuilder::create($options);
 
 
-        // Set the Laravel SDK identifier and version
+        // Set the Hyperf SDK identifier and version
         $clientBuilder->setSdkIdentifier(Version::SDK_IDENTIFIER);
         $clientBuilder->setSdkVersion(Version::SDK_VERSION);
 
