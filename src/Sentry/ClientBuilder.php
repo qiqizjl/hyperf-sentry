@@ -49,7 +49,6 @@ class ClientBuilder
 
         $clientBuilder = \Sentry\ClientBuilder::create($options);
 
-
         // Set the Hyperf SDK identifier and version
         $clientBuilder->setSdkIdentifier(Version::SDK_IDENTIFIER);
         $clientBuilder->setSdkVersion(Version::SDK_VERSION);

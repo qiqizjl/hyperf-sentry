@@ -16,5 +16,5 @@ namespace Naixiaoxin\HyperfSentry;
 final class Version
 {
     public const SDK_IDENTIFIER = 'sentry.php.hyperf';
-    public const SDK_VERSION = '1.0.0';
+    public const SDK_VERSION = '2.1.0';
 }

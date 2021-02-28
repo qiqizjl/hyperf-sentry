@@ -15,6 +15,7 @@ namespace Naixiaoxin\HyperfSentry\Aspect;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Di\Annotation\Aspect;
 use Hyperf\Di\Aop\AroundInterface;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
@@ -39,8 +40,19 @@ class HttpClientAspect implements AroundInterface
             //Client::class . '::request',
         ];
 
+    protected $config;
+
+    public function __construct(ConfigInterface  $config)
+    {
+        $this->config = $config;
+    }
+
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
+        if (!$this->config->get("sentry.breadcrumbs.guzzle",false)){
+            return $proceedingJoinPoint->process();
+        }
+
         $options = $proceedingJoinPoint->arguments['keys']['options'];
         // 允许设置当前不被采集
         if (isset($options['no_aspect']) && $options['no_aspect'] === true) {

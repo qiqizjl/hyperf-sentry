@@ -12,8 +12,11 @@ declare(strict_types=1);
 
 return [
     "dsn"          => env("SENTRY_DSN"),
+    "release"      => env("SENTRY_RELEASE", ""),
     "breadcrumbs"  => [
-        "sql_bindings" => false,
+        "mysql"  => true,
+        "redis"  => true,
+        "guzzle" => true,
     ],
     "integrations" => [],
 ];

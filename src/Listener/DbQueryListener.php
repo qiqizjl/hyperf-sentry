@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Naixiaoxin\HyperfSentry\Listener;
 
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Database\Events\QueryExecuted;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
@@ -26,6 +27,16 @@ use Sentry\Breadcrumb;
  */
 class DbQueryListener implements ListenerInterface
 {
+
+
+    protected $config;
+
+    public function __construct(ConfigInterface  $config)
+    {
+        $this->config = $config;
+    }
+
+
     /**
      * 监听事件
      *
@@ -45,6 +56,9 @@ class DbQueryListener implements ListenerInterface
      */
     public function process(object $event)
     {
+        if (!$this->config->get("sentry.breadcrumbs.mysql",false)){
+            return $proceedingJoinPoint->process();
+        }
 
         if ($event instanceof QueryExecuted) {
             $data["connectionName"] = $event->connectionName;

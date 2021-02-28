@@ -33,7 +33,6 @@ class Integration implements IntegrationInterface
             $event->setContext("swoole",[
                 "version"=>SWOOLE_VERSION,
             ]);
-            $event->setEnvironment();
 
             return $event;
         });

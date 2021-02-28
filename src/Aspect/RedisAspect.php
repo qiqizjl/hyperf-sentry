@@ -11,10 +11,10 @@ declare(strict_types=1);
  */
 namespace Naixiaoxin\HyperfSentry\Aspect;
 
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Di\Annotation\Aspect;
 use Hyperf\Di\Aop\AroundInterface;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
-use Hyperf\Redis\Redis;
 use Naixiaoxin\HyperfSentry\Integration;
 use Sentry\Breadcrumb;
 
@@ -32,19 +32,26 @@ class RedisAspect implements AroundInterface{
      */
     public $classes
         = [
-            Redis::class . '::__call',
+            \Redis::class . '::__call',
         ];
 
-    /**
-     * @var array
-     */
-    public $annotations = [];
+
+    protected $config;
+
+    public function __construct(ConfigInterface  $config)
+    {
+        $this->config = $config;
+    }
+
 
     /**
      * @return mixed return the value from process method of ProceedingJoinPoint, or the value that you handled
      */
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
+        if (!$this->config->get("sentry.breadcrumbs.redis",false)){
+            return $proceedingJoinPoint->process();
+        }
 
         $arguments = $proceedingJoinPoint->arguments['keys'];
         $startTime = microtime(true);
